@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "name": "Volta das colinas · 5 km",
+  "segments": [
+    { "name": "Aquecimento", "distanceMeters": 1000, "gradePercent": 0 },
+    { "name": "Primeira subida", "distanceMeters": 1000, "gradePercent": 3 },
+    { "name": "Rampa", "distanceMeters": 500, "gradePercent": 6 },
+    { "name": "Descida", "distanceMeters": 1500, "gradePercent": -2 },
+    { "name": "Regresso", "distanceMeters": 1000, "gradePercent": 0 }
+  ]
+}

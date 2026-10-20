@@ -1,0 +1,84 @@
+<Window x:Class="BikeGame.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="BikeGame · KICKR Studio" Width="1200" Height="900" MinWidth="950" MinHeight="700" Background="#0C1422" FontFamily="Segoe UI" FontSize="14" Closing="OnClosing">
+ <ScrollViewer VerticalScrollBarVisibility="Auto">
+ <StackPanel Margin="30">
+  <DockPanel Margin="0,0,0,22">
+   <StackPanel><TextBlock Text="KICKR / STUDIO" FontSize="28" FontWeight="Bold"/><TextBlock Text="O teu rolo. Os teus percursos." Foreground="#92A6C1" Margin="0,4,0,0"/></StackPanel>
+   <TextBlock x:Name="ConnectionLabel" Text="●  Sem ligação" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#57DEC1"/>
+  </DockPanel>
+  <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,0,16">
+   <StackPanel>
+    <WrapPanel>
+     <Button x:Name="ScanButton" Content="Procurar Bluetooth" Click="ScanClick"/>
+     <ComboBox x:Name="Devices" Width="300" DisplayMemberPath="Name"/>
+     <Button x:Name="ConnectButton" Content="Ligar" Click="ConnectClick"/>
+     <Button x:Name="DemoButton" Content="Demonstração" Click="DemoClick"/>
+     <Button x:Name="DisconnectButton" Content="Desligar" Click="DisconnectClick"/>
+    </WrapPanel>
+    <TextBlock x:Name="StatusLabel" Text="Liga o KICKR à corrente, ativa o Bluetooth e procura o dispositivo." Foreground="#AFC0D8" TextWrapping="Wrap" Margin="0,12,0,0"/>
+   </StackPanel>
+  </Border>
+  <UniformGrid Columns="5" Margin="0,0,0,16">
+   <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,10,0"><StackPanel><TextBlock Text="POTÊNCIA" Foreground="#92A6C1"/><TextBlock x:Name="PowerLabel" Text="— W" FontSize="32" FontWeight="Bold" Foreground="#57DEC1"/></StackPanel></Border>
+   <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,10,0"><StackPanel><TextBlock Text="VELOCIDADE" Foreground="#92A6C1"/><TextBlock x:Name="SpeedLabel" Text="— km/h" FontSize="28" FontWeight="Bold"/></StackPanel></Border>
+   <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,10,0"><StackPanel><TextBlock Text="CADÊNCIA" Foreground="#92A6C1"/><TextBlock x:Name="CadenceLabel" Text="— rpm" FontSize="28" FontWeight="Bold"/></StackPanel></Border>
+   <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,10,0"><StackPanel><TextBlock Text="FREQ. CARDÍACA" Foreground="#92A6C1"/><TextBlock x:Name="HeartLabel" Text="— bpm" FontSize="28" FontWeight="Bold"/></StackPanel></Border>
+   <Border Background="{StaticResource Panel}" Padding="18"><StackPanel><TextBlock Text="MUDANÇA VIRTUAL" Foreground="#92A6C1"/><TextBlock x:Name="GearLabel" Text="Inativa" FontSize="28" Margin="0,4,0,0"/></StackPanel></Border>
+  </UniformGrid>
+  <Border Background="{StaticResource Panel}" Padding="18" Margin="0,0,0,16">
+   <StackPanel>
+    <WrapPanel Margin="0,0,0,12">
+     <Button x:Name="EnableGearsButton" Content="Ativar mudanças (SIM)" Click="EnableGearsClick"/>
+     <Button x:Name="GearDownButton" Content="− Mais leve" Click="GearDownClick"/>
+     <Button x:Name="GearUpButton" Content="+ Mais pesada" Click="GearUpClick"/>
+     <TextBlock x:Name="GearStatusLabel" Text="Liga o rolo para detetar as mudanças." VerticalAlignment="Center" TextWrapping="Wrap"/>
+    </WrapPanel>
+    <WrapPanel>
+     <Button x:Name="ScanClickButton" Content="Procurar Click 2" Click="ScanControllersClick"/>
+     <ComboBox x:Name="ClickDevices" Width="400" DisplayMemberPath="Name"/>
+     <Button x:Name="ConnectClickButton" Content="Ligar Click 2" Click="ConnectControllersClick"/>
+     <Button x:Name="DisconnectClickButton" Content="Desligar Click 2" Click="DisconnectControllersClick"/>
+     <Button Content="Guardar diagnóstico…" Click="SaveBluetoothLogClick"/>
+    </WrapPanel>
+    <TextBlock x:Name="ClickStatusLabel" Text="Click 2: sem ligação" TextWrapping="Wrap" Foreground="#AFC0D8" Margin="0,10,0,0"/>
+    <TextBlock x:Name="LeftClickLabel" Text="Botão −: por validar" TextWrapping="Wrap" Foreground="#AFC0D8" Margin="0,5,0,0"/>
+    <TextBlock x:Name="RightClickLabel" Text="Botão +: por validar" TextWrapping="Wrap" Foreground="#AFC0D8" Margin="0,5,0,0"/>
+    <TextBlock Text="O par usa uma ligação ao comando esquerdo. Acorda o esquerdo antes de procurar e o direito depois de ligar; não precisas de o selecionar à parte. Uma luz fixa confirma Bluetooth, mas testa − e + para validar os botões. A mudança apresentada é a selecionada nesta app." TextWrapping="Wrap" Foreground="#92A6C1" Margin="0,10,0,0"/>
+   </StackPanel>
+  </Border>
+  <Border Background="{StaticResource Panel}" Padding="22" Margin="0,0,0,16">
+   <StackPanel>
+    <DockPanel><TextBlock x:Name="RouteLabel" FontSize="22" FontWeight="SemiBold"/><TextBlock x:Name="ProgressLabel" Text="0,0%" FontSize="26" Foreground="#57DEC1" HorizontalAlignment="Right"/></DockPanel>
+    <Canvas x:Name="Profile" Height="130" Margin="0,18,0,10" SizeChanged="ProfileSizeChanged" ClipToBounds="True"/>
+    <ProgressBar x:Name="Progress" Height="8" Maximum="100" Foreground="#57DEC1" Background="#28364C"/>
+    <DockPanel Margin="0,12,0,18"><TextBlock x:Name="DistanceLabel"/><TextBlock x:Name="TimeLabel" Text="00:00:00" HorizontalAlignment="Right" Foreground="#92A6C1"/></DockPanel>
+    <TextBlock x:Name="SegmentLabel" FontSize="18" Margin="0,0,0,14"/>
+    <WrapPanel>
+     <Button x:Name="StartButton" Content="Iniciar / retomar" Click="StartClick" Background="#167D70"/>
+     <Button x:Name="PauseButton" Content="Pausar" Click="PauseClick"/>
+     <Button x:Name="ResetButton" Content="Reiniciar percurso" Click="ResetClick"/>
+     <Button x:Name="StopButton" Content="Parar controlo" Click="StopClick" Background="#853B46"/>
+    </WrapPanel>
+   </StackPanel>
+  </Border>
+  <Grid>
+   <Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
+   <Border Grid.Column="0" Background="{StaticResource Panel}" Padding="20" Margin="0,0,16,0">
+    <StackPanel><DockPanel Margin="0,0,0,12"><TextBlock Text="Percurso JSON" FontSize="20"/><Button Content="Abrir ficheiro…" Click="OpenClick" HorizontalAlignment="Right"/></DockPanel>
+     <TextBox x:Name="JsonEditor" FontFamily="Consolas" FontSize="12" Height="245" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+     <WrapPanel Margin="0,12,0,0"><Button x:Name="ApplyRouteButton" Content="Aplicar JSON" Click="ApplyRouteClick"/><Button Content="Guardar JSON…" Click="SaveClick"/></WrapPanel>
+    </StackPanel>
+   </Border>
+   <Border Grid.Column="1" Background="{StaticResource Panel}" Padding="20">
+    <StackPanel>
+     <TextBlock Text="Controlo manual" FontSize="20" Margin="0,0,0,10"/>
+     <TextBlock Text="Pausa o percurso ao aplicar. Inclinação em %; potência em watts (ERG)." TextWrapping="Wrap" Foreground="#92A6C1" Margin="0,0,0,12"/>
+     <WrapPanel Margin="0,0,0,10"><TextBox x:Name="GradeInput" Text="0" Width="75" Margin="0,0,8,0"/><Button x:Name="GradeButton" Content="Aplicar inclinação %" Click="GradeClick"/></WrapPanel>
+     <WrapPanel><TextBox x:Name="PowerInput" Text="150" Width="75" Margin="0,0,8,0"/><Button x:Name="PowerButton" Content="Aplicar ERG · W" Click="PowerClick"/></WrapPanel>
+     <TextBlock x:Name="ControlLabel" Text="Controlo inativo" Foreground="#57DEC1" Margin="0,16,0,10" TextWrapping="Wrap"/>
+     <TextBlock Text="A distância é calculada a partir da velocidade do rolo, sem física de estrada. Sem dados recentes, o percurso pausa automaticamente." TextWrapping="Wrap" Foreground="#92A6C1"/>
+    </StackPanel>
+   </Border>
+  </Grid>
+ </StackPanel>
+ </ScrollViewer>
+</Window>

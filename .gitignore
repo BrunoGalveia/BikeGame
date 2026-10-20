@@ -1,0 +1,7 @@
+bin/
+obj/
+outputs/
+.dotnet/
+*.user
+tests/bin/
+tests/obj/
